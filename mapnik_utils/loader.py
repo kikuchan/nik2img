@@ -86,10 +86,12 @@ class Load(object):
                 cascadenik.load_map(m,self.mapfile,self.output_dir,verbose=self.verbose)
             elif major > 1:
                 raise NotImplementedError('This nik2img version does not yet support Cascadenik > 1.x, please upgrade nik2img to the latest release')
+        elif hasattr(cascadenik,'__version__'):
+            cascadenik.load_map(m,self.mapfile,self.output_dir,verbose=self.verbose)
         else:
             from cascadenik import compile as _compile
             compiled = os.path.join(self.output_dir,'%s_compiled.xml' % os.path.splitext(os.path.basename(self.mapfile))[0])
-            output = _compile(self.mapfile)
+            output = _compile(self.mapfile, ["."])
             open(compiled, 'w').write(output)
             mapnik.load_map(m, compiled)
 
